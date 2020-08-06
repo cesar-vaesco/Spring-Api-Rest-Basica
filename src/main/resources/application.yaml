@@ -1,0 +1,16 @@
+server:
+  port: 8080
+#Configurando el intercambio de datos 
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+         dialect: org.hibernate.dialect.MySQL5Dialect
+ #Configuración de la conexión a la base de datos
+  datasource:
+     driver-class-name: com.mysql.cj.jdbc.Driver    
+     url: jdbc:mysql://localhost:3306/products?serverTimezone=America/Mexico_City&useSSL=false      
+     username: root
+     password: cesar
