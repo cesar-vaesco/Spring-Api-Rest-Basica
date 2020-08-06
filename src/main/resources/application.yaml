@@ -1,6 +1,6 @@
 server:
   port: 8080
-#Configurando el intercambio de datos 
+#Configurando el intercambio de datos y la generación de la tabla
 spring:
   jpa:
     hibernate:

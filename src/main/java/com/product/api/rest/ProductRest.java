@@ -2,25 +2,32 @@ package com.product.api.rest;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.product.api.dao.ProductsDAO;
 import com.product.api.entity.Product;
 
 @RestController
 @RequestMapping("products")
 public class ProductRest {
 
-	/*
+	@Autowired
+	private ProductsDAO productoDAO;
+	
+	/*Mostrando todos los productos*/
 	@GetMapping("/product")
 	public ResponseEntity<List<Product>> getProduct(){
-		
-		
-		return ResponseEntity.ok(product);
-	} */
+		List<Product> products = productoDAO.findAll();
+		return ResponseEntity.ok(products);
+	} 
+	
+	
+	
 	
 	//@GetMapping
 	@RequestMapping(value="hello", method = RequestMethod.GET)
