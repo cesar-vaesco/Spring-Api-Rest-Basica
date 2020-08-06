@@ -1,10 +1,12 @@
 package com.product.api.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,16 +19,29 @@ import com.product.api.entity.Product;
 public class ProductRest {
 
 	@Autowired
-	private ProductsDAO productoDAO;
+	private ProductsDAO productDAO;
 	
 	/*Mostrando todos los productos*/
-	@GetMapping("/product")
-	public ResponseEntity<List<Product>> getProduct(){
-		List<Product> products = productoDAO.findAll();
+	@GetMapping("allProducts")
+	public ResponseEntity<List<Product>> getProducts(){
+		List<Product> products = productDAO.findAll();
 		return ResponseEntity.ok(products);
 	} 
 	
-	
+	/*Mostrando producto usando id*/
+	//
+	@GetMapping("{productId}")
+	//@RequestMapping(value = "{productId}")
+	public ResponseEntity<Product> getProductById(@PathVariable("productId") Long productId){
+		       Optional<Product> optionalProduct = productDAO.findById(productId);
+		       if(optionalProduct.isPresent()) {
+		    	   /*Si encuentra el producto lo muestra */
+		    	   return ResponseEntity.ok(optionalProduct.get());
+		       } else {
+		    	   /*Si no encuentra el producto responde con not content*/
+		    	   return ResponseEntity.noContent().build();
+		       }
+	}
 	
 	
 	//@GetMapping
