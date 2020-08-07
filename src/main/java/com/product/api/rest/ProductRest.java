@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.product.api.dao.ProductsDAO;
@@ -55,14 +57,28 @@ public class ProductRest {
 	}
 
 	// Borrar un product -> url de respuesta :8080/products
-	@DeleteMapping(value= "{productId}")
+	@DeleteMapping(value = "{productId}")
 	public ResponseEntity<Product> deleteProduct(@PathVariable("productId") Long productId) {
-		  Optional<Product> productDelete = productDAO.findById(productId);		
-		  if(productDelete.isPresent()) {
-			  productDAO.deleteById(productId);
-			  return ResponseEntity.ok(null);
-		  }
-		  return  ResponseEntity.noContent().build();
+		Optional<Product> productDelete = productDAO.findById(productId);
+		if (productDelete.isPresent()) {
+			productDAO.deleteById(productId);
+			return ResponseEntity.ok(null);
+		}
+		return ResponseEntity.noContent().build();
+	}
+
+	// Actualizando datos
+	@PutMapping
+	public ResponseEntity<Product> updateProduct(@RequestBody Product product) {
+		Optional<Product> optionalProduct = productDAO.findById(product.getId());
+		if (optionalProduct.isPresent()) {
+			Product updateProduct = optionalProduct.get();
+			updateProduct.setName(product.getName());
+			productDAO.save(updateProduct);
+			return ResponseEntity.ok(updateProduct);
+		} else {
+			return ResponseEntity.noContent().build();
+		}
 	}
 
 	// url de respuesta :8080/products/hello
