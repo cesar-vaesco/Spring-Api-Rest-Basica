@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,9 +56,13 @@ public class ProductRest {
 
 	// Borrar un product -> url de respuesta :8080/products
 	@DeleteMapping(value= "{productId}")
-	public ResponseEntity<Void> deleteProduct(@PathVariable("productId") Long productId) {
-		productDAO.deleteById(productId);
-		return ResponseEntity.ok(null);
+	public ResponseEntity<Product> deleteProduct(@PathVariable("productId") Long productId) {
+		  Optional<Product> productDelete = productDAO.findById(productId);		
+		  if(productDelete.isPresent()) {
+			  productDAO.deleteById(productId);
+			  return ResponseEntity.ok(null);
+		  }
+		  return  ResponseEntity.noContent().build();
 	}
 
 	// url de respuesta :8080/products/hello
